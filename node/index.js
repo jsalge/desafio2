@@ -11,34 +11,42 @@ const config = {
 
 const mysql = require('mysql')
 
-const connection = mysql.createConnection(config)
 
-const sql = `INSERT INTO people(name) values('joao')`
-
-connection.query(sql)
-
-connection.end()
 
 app.get('/', (req,res) => {
-    var retorno = '<h1>Full Cycle Rocks!</h1>'
     const connection = mysql.createConnection(config)
+
+    console.log(req.query.name)
+
+    var name = req.query.name != "undefined"?req.query.name:"Joao"
+
+    const sql = `INSERT INTO people(name) values('${name}')`
+
+    connection.query(sql)
+
+    var retorno = '<h1>Full Cycle Rocks!</h1>'
 
     const sqlSelect = `SELECT * FROM people`
 
     connection.query(sqlSelect, function(err, result, fields){
         if(err) {
+            
             retorno = '<h1>Erro na consulta com o banco de dados</h1>'
             res.send(retorno)
+            
             throw err;
         }
         
         result.map(people => {
             retorno = retorno+'<li>'+people.name+'</li>';
         })
+        
         res.send(retorno)
         
 
     })
+    
+    connection.end()
     
 })
 
