@@ -18,7 +18,7 @@ app.get('/', (req,res) => {
 
     console.log(req.query.name)
 
-    var name = req.query.name != "undefined"?req.query.name:"Joao"
+    var name = req.query.name?req.query.name:"Joao"
 
     const sql = `INSERT INTO people(name) values('${name}')`
 
